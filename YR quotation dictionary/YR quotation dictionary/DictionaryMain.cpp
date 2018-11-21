@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <windows.h>
+#include <conio.h>
 #include "node.h"
 #include "system.h"
 #include "BinarySearch.h"
@@ -12,21 +13,22 @@ int main()
 	NODE *root;
 	Initialize(&root);
 
+	LIMIT currentLimit = LIMIT::ALL;
+	int quotationNum = 0;
 	while (true)
 	{
+		cout << "    대마영래실록    " << endl;
 		cout << "--------------------" << endl;
 		cout << "1. 작성하기" << endl;
 		cout << "2. 삭제하기" << endl;
 		cout << "3. 어록 찾기(ID)" << endl;
-		cout << "4. 랜덤 어록" << endl;
-		cout << "5. 전체 어록" << endl;
-		cout << "6. 검열도 설정" << endl;
-		cout << "7. 개발자 명단" << endl;
+		cout << "4. 전체 어록" << endl;
+		cout << "5. 검열도 설정" << endl;
+		cout << "6. 개발자 명단" << endl;
 		cout << "Q. 종료" << endl;
 		cout << "--------------------" << endl;
 		cout << "원하는 동작의 번호를 입력하세요 : ";
 
-		LIMIT currentLimit = LIMIT::ALL;
 		char input;
 		cin >> input;
 		
@@ -34,27 +36,8 @@ int main()
 		{
 		case '1':
 		{
-			if (!sys.ExistPassword())
+			if (!sys.InputPassword())
 			{
-				cout << "비밀번호를 설정해주세요 : ";
-				string setPW;
-				cin >> setPW;
-				if (!sys.SetPassword(setPW))
-				{
-					cout << "오류가 발생했습니다." << endl;
-					sys.SetPassword("");
-					break;
-				}
-				else
-					cout << "올바르게 설정되었습니다." << endl;
-			}
-
-			string inputPW;
-			cout << "비밀번호를 입력해주세요 : ";
-			cin >> inputPW;
-			if (!sys.ComparePassword(inputPW))
-			{
-				cout << "비밀번호가 맞지 않습니다." << endl;
 				break;
 			}
 
@@ -80,23 +63,76 @@ int main()
 			}
 
 			cout << "어록이 바르게 등록되었습니다.";
+			quotationNum++;
 			break;
 		}
 		case '2':
 		{
+			if (!sys.InputPassword())
+				break;
+			cout << "삭제할 어록의 ID를 입력해주세요 : ";
+			int delID;
+			cin >> delID;
+
+			NODE *deleteNode;
+			try
+			{
+				deleteNode = Search(root, delID);
+			}
+			catch (const char *exp)
+			{
+				cout << exp;
+				break;
+			}
+
+			RemoveNode(deleteNode, &root);
+			cout << "정상적으로 삭제되었습니다.";
+			quotationNum--;
 			break;
 		}
 		case '3':
-			break;
-		case '4':
-			break;
-		case '5':
-			break;
-		case '6':
 		{
+			int wantID;
+			cout << "원하는 어록의 ID를 입력해주세요 : ";
+			cin >> wantID;
+			NODE *wantNode = Search(root, wantID);
+			if (currentLimit < wantNode->data.limit)
+			{
+				cout << "나이를 더 먹고 오세요~~^^";
+			}
+			else
+			{
+				cout << wantNode->data.quotation;
+			}
+			break;
+		}
+		case '4':
+		{
+			if (quotationNum > 0)
+				InorderTraverse(root, currentLimit);
+			cout << "계속하려면 아무 키나 누르세요..";
+			while (!_kbhit());
+			break;
+		}
+		case '5':
+		{
+			system("cls");
+			cout << "-----검열도 설정-----" << endl;
+			cout << "1. 전체이용가" << endl;
+			cout << "2. 15세 이용가" << endl;
+			cout << "3. 19세 이용가" << endl;
+			cout << "--------------------" << endl;
+			cout << "설정할 검열도를 입력해주세요 : ";
 			int input;
 			cin >> input;
 
+			currentLimit = static_cast<LIMIT>(input);
+			break;
+		}
+		case '6':
+		{
+			cout << "개발자, 아이디어 기획 : 김태현, 김영래" << endl;
+			cout << "응원 : 김영래";
 			break;
 		}
 		case 'Q':

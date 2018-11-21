@@ -4,7 +4,7 @@
 
 void Initialize(NODE **);
 void Insert(NODE **, Data);
-NODE *Search(NODE *, Data);
-NODE *RemoveNode(NODE *);
+NODE *Search(NODE *, unsigned int);
+NODE *RemoveNode(NODE *, NODE **);
 
 #endif

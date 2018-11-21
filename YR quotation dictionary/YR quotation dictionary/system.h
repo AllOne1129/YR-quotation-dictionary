@@ -26,5 +26,34 @@ public:
 	{
 		return this->password == password;
 	}
+
+	bool InputPassword()
+	{
+		if (!ExistPassword())
+		{
+			cout << "비밀번호를 설정해주세요 : ";
+			string setPW;
+			cin >> setPW;
+			if (!SetPassword(setPW))
+			{
+				cout << "오류가 발생했습니다." << endl;
+				SetPassword("");
+				return false;
+			}
+			else
+				cout << "올바르게 설정되었습니다." << endl;
+		}
+
+		string inputPW;
+		cout << "비밀번호를 입력해주세요 : ";
+		cin >> inputPW;
+		if (!ComparePassword(inputPW))
+		{
+			cout << "비밀번호가 맞지 않습니다." << endl;
+			return false;
+		}
+
+		return true;
+	}
 };
 #endif

@@ -31,10 +31,7 @@ void SetData(NODE *, Data);
 void MakeLeftSubTree(NODE *, NODE *);
 void MakeRightSubTree(NODE *, NODE *);
 
-void InorderTraverse(NODE *);
-void PreorderTraverse(NODE *);
-void PostorderTraverse(NODE *);
-
-void DeleteTree(NODE *);
+void InorderTraverse(NODE *, LIMIT);
+void CountNode(NODE *, int &);
 
 #endif

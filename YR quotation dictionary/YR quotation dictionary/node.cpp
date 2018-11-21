@@ -22,43 +22,23 @@ void MakeRightSubTree(NODE *node1, NODE *node2)
 {
 	node1->right = node2;
 }
-void InorderTraverse(NODE *node)
+void InorderTraverse(NODE *node,LIMIT limit)
 {
 	if (node == nullptr)
 		return;
 
-	InorderTraverse(node->left);
-	std::cout << node->data.quotation << " ";
-	InorderTraverse(node->right);
+	InorderTraverse(node->left, limit);
+	if(limit>=node->data.limit)
+		std::cout << std::setw(10) << node->data.id << std::setw(30) << node->data.quotation << std::endl;
+	InorderTraverse(node->right, limit);
 }
 
-void PreorderTraverse(NODE *node)
+void CountNode(NODE *node, int &count)
 {
 	if (node == nullptr)
 		return;
 
-	std::cout << node->data.quotation << " ";
-	PreorderTraverse(node->left);
-	PreorderTraverse(node->right);
-}
-
-void PostorderTraverse(NODE *node)
-{
-	if (node == nullptr)
-		return;
-
-	PostorderTraverse(node->left);
-	PostorderTraverse(node->right);
-	std::cout << node->data.quotation << " ";
-}
-
-void DeleteTree(NODE *node)
-{
-	if (node == nullptr)
-		return;
-
-	DeleteTree(node->left);
-	DeleteTree(node->right);
-	delete[] node;
-	node = nullptr;
+	CountNode(node->left, count);
+	count++;
+	CountNode(node->right, count);
 }
